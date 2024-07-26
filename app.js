@@ -170,32 +170,7 @@ app.delete('/api/assets/:id', async (req, res) => {
     }
 });
 
-// Create or update user
-app.post('/api/users', async (req, res) => {
-    try {
-        const { uId, name, email, role } = req.body;
-        let user;
 
-        if (uId) {
-            // Update existing user
-            user = await AdminUser.findOneAndUpdate({ uId }, { name, email, role }, { new: true });
-            if (!user) {
-                // If no user found with the given uId, create a new user
-                user = new AdminUser({ uId, name, email, role });
-                await user.save();
-            }
-        } else {
-            // Create new user
-            user = new AdminUser({ uId: new mongoose.Types.ObjectId().toString(), name, email, role });
-            await user.save();
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        console.error('Error saving user:', error);
-        res.status(500).json({ message: 'Failed to save user' });
-    }
-});
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
